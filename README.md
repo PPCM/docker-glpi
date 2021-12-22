@@ -48,9 +48,10 @@ $ docker run -d --name some-glpi-cron --network some-network -e MYSQL_HOST=some-
 
 #### Exposed ports
 
-| Port      | Usage               |
-|:----------:|:-------------------:|
-| 80/tcp    | HTTP web application|
+| Port      | mariadb | ppcm/glpi-cron | ppcm/glpi | Usage                         |
+|:---------:|:-------:|:--------------:|:---------:|:-----------------------------:|
+| 80/tcp    |         |                | X         | HTTP web application          |
+| 3306/TCP  | X       |                |           | Mysql/MariaDB port connection |
 
 For SSL, there are many different possibilities to introduce encryption depending on your setup.
 
@@ -60,18 +61,19 @@ For example, you can use the popular nginx-proxy and docker-letsencrypt-nginx-pr
 
 #### Environments variables
 
-| Environment       | Default       | Usage                                     |
-|:------------------|:-------------:|:------------------------------------------|
-| MYSQL_HOST        |               | MANDATORY - MySQL or MariaDB host name    |
-| MYSQL_PORT        | 3306          | MySQL or MariaDB host port                |
-| MYSQL_ROOT_PASSWORD |             | MySQL or MariaDB root password, it is needed to create database and user. It is also needed to configure properly the user. It can be set only on first start of the applkcation. |
-| MYSQL_USER        | glpi-user     | MySQL or MariaDB GLPI username            |
-| MYSQL_PASSWORD    | glpi-password | MySQL or MariaDB password for GLPI user   |
-| MYSQL_DATABASE    | glpi          | MySQL or MariaDB database name for GLPI   |
-| LANG              | fr_FR         | Default language of GLPI                  |
-| TZ                | Europe/Paris  | Timezone of the web server                |
+| Environment         | mariadb | ppcm/glpi-cron | ppcm/glpi | Default       | Usage                                     |
+|:--------------------|:-------:|:--------------:|:---------:|:-------------:|:------------------------------------------|
+| MYSQL_HOST          |         | X              |           |               | MANDATORY - MySQL or MariaDB host name    |
+| MYSQL_PORT          |         | X              |           | 3306          | MySQL or MariaDB host port                |
+| MYSQL_ROOT_PASSWORD | X       | X              |           |               | MySQL or MariaDB root password, it is needed to create database and user. It is also needed to configure properly the user. It can be set only on first start of the applkcation. |
+| MYSQL_USER          | X       | X              |           | glpi-user     | MySQL or MariaDB GLPI username            |
+| MYSQL_PASSWORD      | X       | X              |           | glpi-password | MySQL or MariaDB password for GLPI user   |
+| MYSQL_DATABASE      | X       | X              |           | glpi          | MySQL or MariaDB database name for GLPI   |
+| LANG                |         | X              |           | fr_FR         | Default language of GLPI                  |
+| TZ                  |         | X              | X         | Europe/Paris  | Timezone of the web server                |
 
 #### Exposed volumes
+Volumes must be exposed both for `ppcm/glpi` and `ppcm/glpi-cron`
 
 | Volume                    | Usage                                             |
 |:--------------------------|:--------------------------------------------------|
