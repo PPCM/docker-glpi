@@ -10,6 +10,12 @@ FROM alpine:latest
 
 ENV NODE_ENV=production
 
+# Mount volumes persistence
+VOLUME /var/www/glpi/config
+VOLUME /var/www/glpi/files
+VOLUME /var/www/glpi/plugins
+VOLUME /var/www/glpi/marketplace
+
 # Variables for versions
 ENV GLPI_VERSION="9.5.6"
 ENV PLUGIN_ACCOUNT_VERSION="2.6.0"
@@ -76,12 +82,6 @@ COPY start_glpi-cron.sh .
 RUN chmod go-rwx /etc/crontabs/glpi.cron \
 	&& chmod u-x /etc/crontabs/glpi.cron \
 	&& chmod a+x start_glpi-cron.sh
-
-# Mount volumes persistence
-VOLUME /var/www/glpi/config
-VOLUME /var/www/glpi/files
-VOLUME /var/www/glpi/plugins
-VOLUME /var/www/glpi/marketplace
 
 # Run Apache2
 ENTRYPOINT ["/root/start_glpi-cron.sh"]
