@@ -133,6 +133,10 @@ if [ -z "${GLPI_ACTUAL_VERSION}" ]
 then
 	# Install GLPI
 	echo "GLPI installation"
+	cp -a /root/glpi/config /var/www/glpi
+	cp -a /root/glpi/files /var/www/glpi
+	cp -a /root/glpi/plugins /var/www/glpi
+	cp -a /root/glpi/marketplace /var/www/glpi
 	bin/console -n db:install ${INSTALL_PARAM}
 
 	# Copy all plugins to GLPI folder
