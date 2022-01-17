@@ -2,8 +2,7 @@
 
 ## Supported tags
 
-- 9.5.6, 9.5, 9, latest
-- unstable
+- 9.5.6-1, 9.5.6, 9.5, 9, latest
 
 ## Quick reference
 
