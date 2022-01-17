@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
 # Dockerfile for GLPI
-# Compile : docker build --no-cache -t ppcm/glpi .
-# Build multiplateform : docker buildx build --no-cache --push --platform linux/386,linux/amd64,linux/arm/v6,linux/arm64,linux/arm --tag ppcm/glpi:latest .
+# Compile : docker build --no-cache -t ppcm/glpi-server .
+# Build multiplateform : docker buildx build --no-cache --push --platform linux/386,linux/amd64,linux/arm/v6,linux/arm64,linux/arm --tag ppcm/glpi-server:latest .
 
 # Dockerfile for GLPI cron
 # Compile : docker build --no-cache -t ppcm/glpi-cron .
