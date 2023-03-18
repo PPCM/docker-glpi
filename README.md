@@ -2,7 +2,7 @@
 
 ## Supported tags
 
-- 9.5.6-1, 9.5.6, 9.5, 9, latest
+- 10.0.6-1, 10.0.6, 10.0, 10, latest
 
 ## Quick reference
 
@@ -22,15 +22,14 @@ This image contains GLPI with:
 - OS: Alpine
 - Web Server: Apache2 / PHP
 - Following plugins are installed in this package:
-    - [Account](https://github.com/InfotelGLPI/accounts)
+    - [Accounts](https://github.com/InfotelGLPI/accounts)
     - [Addressing](https://github.com/pluginsGLPI/addressing)
     - [Fields](https://github.com/pluginsGLPI/fields)
-    - [Fusion Inventory](https://github.com/fusioninventory/fusioninventory-for-glpi)
     - [Manageentities](https://github.com/InfotelGLPI/manageentities)
     - [Manufacturesimports](https://github.com/InfotelGLPI/manufacturersimports)
-    - [More reporting GLPI plugin](https://github.com/pluginsGLPI/mreporting)
-    - [News GLPI plugin](https://github.com/pluginsGLPI/news)
-    - [Additional Reports](https://forge.glpi-project.org/news/415)
+    - [More reporting](https://github.com/pluginsGLPI/mreporting)
+    - [News](https://github.com/pluginsGLPI/news)
+    - [Additional Reports](https://github.com/yllen/reports)
 
 Description of each image
 - ppcm/glpi-server : This is the web server displaying the UI
@@ -43,8 +42,8 @@ Starting a `GLPI` instance is simple
 ```console
 $ docker network create some-network 
 $ docker run -d --name some-mariadb -p 3306:3306 --network some-network -e MARIADB_USER=glpi-user -e MARIADB_PASSWORD=glpi-password -e MARIADB_ROOT_PASSWORD=root-password -e MARIADB_DATABASE=glpi -v mysql-dir:/var/lib/mysql mariadb:latest
-$ docker run -d --name some-glpi -p 8089:80 --network some-network -e TZ="Europe/Paris" -v glpi-config:/var/www/glpi/config -v glpi-files:/var/www/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-server:latest
-$ docker run -d --name some-glpi-cron --network some-network -e MYSQL_HOST=some-mariadb -e MYSQL_PORT=3306 -e MYSQL_ROOT_PASSWORD=root-password -e MYSQL_USER=glpi-user -e MYSQL_PASSWORD=glpi-password -e MYSQL_DATABASE=glpi -e LANG=fr_FR -e TZ="Europe/Paris" -v glpi-config:/var/www/glpi/config -v glpi-files:/var/www/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-cron:latest
+$ docker run -d --name some-glpi -p 8089:80 --network some-network -e MYSQL_HOST=some-mariadb -e MYSQL_PORT=3306 -e MYSQL_ROOT_PASSWORD=root-password -e MYSQL_USER=glpi-user -e MYSQL_PASSWORD=glpi-password -e MYSQL_DATABASE=glpi -e LANG=fr_FR -e TZ="Europe/Paris" -v glpi-config:/var/glpi/config -v glpi-files:/var/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-server:latest
+$ docker run -d --name some-glpi-cron --network some-network -e TZ="Europe/Paris" -v glpi-config:/var/glpi/config -v glpi-files:/var/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-cron:latest
 ```
 ### Login to GLPI
 
