@@ -26,12 +26,12 @@ jobs:
             file: glpi-cron/Dockerfile
             image: docker.io/ppcm/glpi-cron
             repository: ppcm/glpi-cron
-            short-description: "GLPI cron job, you have in charge for the scheduling (start the job as you want)"
+            short-description: "GLPI cron job, you are in charge for the scheduling (start the job as you want)"
           - context: glpi-cron-daemon/
             file: glpi-cron-daemon/Dockerfile
             image: docker.io/ppcm/glpi-cron-daemon
             repository: ppcm/glpi-cron-daemon
-            short-description: "GLPI cron job daemon running with scheduling managed"
+            short-description: "GLPI cron job daemon is running with scheduling managed"
     permissions:
       contents: read
       packages: write
