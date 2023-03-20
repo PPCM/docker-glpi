@@ -4,6 +4,7 @@
 # Compile : docker build --no-cache -t ppcm/glpi-cron .
 # Build multiplateform : docker buildx build --no-cache --push --platform linux/386,linux/amd64,linux/arm/v6,linux/arm64,linux/arm --tag ppcm/glpi-cron:latest .
 
+#ENV CRON_SCHEDULE - Schedule in CRON format - [cron.guru](https://crontab.guru/) can help you to define it - By default the value is "*/2 * * * *"
 #ENV TZ - specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List)
 
 # VOLUME glpi-config - Persistence for GLPI Config
@@ -69,9 +70,12 @@ RUN \
 	&& chown -R apache:apache plugins \
 	&& chown -R apache:apache marketplace
 
-# GLPI cron start script
-COPY start_glpi-cron.sh .
-RUN chmod a+x start_glpi-cron.sh
+# GLPI cron start script and cron config
+COPY start_glpi-cron-daemon.sh .
+COPY glpi.cron /etc/crontabs/glpi.cron
+RUN chmod go-rwx /etc/crontabs/glpi.cron \
+	&& chmod u-x /etc/crontabs/glpi.cron \
+	&& chmod a+x start_glpi-cron-daemon.sh
 
 # Mount volumes persistence
 VOLUME /var/glpi/config
@@ -80,4 +84,4 @@ VOLUME /var/www/glpi/plugins
 VOLUME /var/www/glpi/marketplace
 
 # Run Start script
-ENTRYPOINT ["/root/start_glpi-cron.sh"]
+ENTRYPOINT ["/root/start_glpi-cron-daemon.sh"]
