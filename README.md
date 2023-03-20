@@ -2,7 +2,7 @@
 
 ## Supported tags
 
-- 10.0.6-1, 10.0.6, 10.0, 10, latest
+- 10, 10.0, 10.0.6, 10.0.6-1, latest
 
 ## Quick reference
 
