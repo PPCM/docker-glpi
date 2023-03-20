@@ -7,8 +7,6 @@ name: Docker
 
 on:
   push:
-    #branches: [ "main" ]
-    # Publish semver tags as releases.
     tags: 
       - '*.*.*-*'
 
@@ -56,7 +54,7 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into registry docker.io
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
