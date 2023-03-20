@@ -34,8 +34,8 @@ This package contains with:
 
 Description of each image
 - ppcm/glpi-server : GLPI web server with the UI
-- ppcm/glpi-cron : GLPI cron job, you have in charge for the scheduling (start the job as you want)
-- ppcm/glpi-cron-daemon : GLPI cron job daemon running with scheduling managed
+- ppcm/glpi-cron : GLPI cron job, you are in charge for the scheduling (start the job as you want)
+- ppcm/glpi-cron-daemon : GLPI cron job daemon is running with scheduling managed
 ## How to use this images
 
 ### Start `GLPI` with docker
@@ -115,5 +115,5 @@ As compensation 2 dedicated images were made for the cron task. Only one instanc
 
 2 ways to run the cron job (only one solution should be used):
 
-- ppcm/glpi-cron : GLPI cron job, you have in charge for the scheduling - You have to start the pod each time you want to execute to cron job - The advantage of this solution is that ressources are released when it is not needed
-- ppcm/glpi-cron-daemon : GLPI cron job daemon running with scheduling managed by an environment variable - The advantage of this solution is that you don't have to care about an external solution for the cron
+- ppcm/glpi-cron : GLPI cron job, you are in charge for the scheduling - You have to start the pod each time you want to execute to cron job - The advantage of this solution is that ressources are released when it is not needed
+- ppcm/glpi-cron-daemon : GLPI cron job daemon is running with scheduling managed by an environment variable - The advantage of this solution is that you don't have to care about an external solution for the cron
