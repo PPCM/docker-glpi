@@ -1,99 +1,102 @@
-name: Build
+name: Docker
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
 
 on:
   push:
-    tags: ['*.*.*']
-
-env:
-#  GLPI_VERSION: ${GITHUB_REF#refs/tags/}
-  GLPI_VERSION: 9.5.6
-  DOCKER_IMAGE_GLPI: ppcm/glpi
-  DOCKER_IMAGE_GLPI_CRON: ppcm/glpi-cron
+    #branches: [ "main" ]
+    # Publish semver tags as releases.
+    tags: 
+      - '*.*.*-*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - context: glpi-server/
+            file: glpi-server/Dockerfile
+            image: docker.io/ppcm/glpi-server
+            repository: ppcm/glpi-server
+            short-description: "GLPI web server with the UI"
+          - context: glpi-cron/
+            file: glpi-cron/Dockerfile
+            image: docker.io/ppcm/glpi-cron
+            repository: ppcm/glpi-cron
+            short-description: "GLPI cron job, you have in charge for the scheduling (start the job as you want)"
+          - context: glpi-cron-daemon/
+            file: glpi-cron-daemon/Dockerfile
+            image: docker.io/ppcm/glpi-cron-daemon
+            repository: ppcm/glpi-cron-daemon
+            short-description: "GLPI cron job daemon running with scheduling managed"
     permissions:
       contents: read
       packages: write
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
+
     steps:
-      - name: checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Version match
-        uses: actions-ecosystem/action-regex-match@v2
-        id: version-match
-        with:
-#          text: ${GITHUB_REF#refs/tags/}
-          text: '9.5.6-1'
-          regex: '^([0-9]+)\.([0-9]+)\.([0-9]+)-([0-9]+)$'
-
-      - name: Prepare
-        id: prep
-        run: |
-          VERSION=${GITHUB_SHA::8}
-
-          # If this is git tag, use the tag name as a docker tag
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/}
-          fi
-          TAGS_GLPI="${{ env.DOCKER_IMAGE_GLPI }}:${VERSION}"
-          TAGS_GLPI_CRON="${{ env.DOCKER_IMAGE_GLPI_CRON }}:${VERSION}"
-
-          echo "Version : ${GITHUB_REF#refs/tags/}"
-          echo "Match : ${{ steps.version-match.outputs.match }}"
-          
-          if [[ "${{ steps.version-match.outputs.match }}" != '' ]]; then
-            VERSION_LVL1="${{ steps.version-match.outputs.group1 }}"
-            VERSION_LVL2="${VERSION_LVL1}.${{ steps.version-match.outputs.group2 }}"
-            VERSION_LVL3="${VERSION_LVL2}.${{ steps.version-match.outputs.group3 }}"
-            VERSION_LVL4="${VERSION_LVL3}-${{ steps.version-match.outputs.group4 }}"
-            TAGS_GLPI="${{ env.DOCKER_IMAGE_GLPI }}:latest,${{ env.DOCKER_IMAGE_GLPI }}:${VERSION_LVL1},${{ env.DOCKER_IMAGE_GLPI }}:${VERSION_LVL2},${{ env.DOCKER_IMAGE_GLPI }}:${VERSION_LVL3},${{ env.DOCKER_IMAGE_GLPI }}:${VERSION_LVL4}"
-            TAGS_GLPI_CRON="${{ env.DOCKER_IMAGE_GLPI_CRON }}:latest,${{ env.DOCKER_IMAGE_GLPI_CRON }}:${VERSION_LVL1},${{ env.DOCKER_IMAGE_GLPI_CRON }}:${VERSION_LVL2},${{ env.DOCKER_IMAGE_GLPI_CRON }}:${VERSION_LVL3},${{ env.DOCKER_IMAGE_GLPI_CRON }}:${VERSION_LVL4}"
-          fi
-
-          echo "GLPI : ${TAGS_GLPI}"
-          echo "GLPI_CRON : ${TAGS_GLPI_CRON}"
-
-          # Set output parameters.
-          echo ::set-output name=tags_glpi::${TAGS_GLPI}
-          echo ::set-output name=tags_glpi_cron::${TAGS_GLPI_CRON}
-
+        # Add support for more platforms with QEMU (optional)
+        # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@master
-        with:
-          platforms: all
+        uses: docker/setup-qemu-action@v2
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@master
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2
 
-      - name: Login to DockerHub
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build GLPI
-        uses: docker/build-push-action@v2
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: ./glpi
-          file: ./glpi/Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm
-          push: true
-          tags: ${{ steps.prep.outputs.tags_glpi }}
+          images: ${{ matrix.image }}
+          tags: |
+            type=match,pattern=\d+.\d+.\d+-\d+
+            type=match,pattern=(\d+.\d+.\d+)-\d+,group=1
+            type=match,pattern=(\d+.\d+).\d+-\d+,group=1
+            type=match,pattern=(\d+).\d+.\d+-\d+,group=1
 
-      - name: Build GLPI CRON
-        uses: docker/build-push-action@v2
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v4
         with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: ./glpi-cron
-          file: ./glpi-cron/Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm
-          push: true
-          tags: ${{ steps.prep.outputs.tags_glpi_cron }}
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Update Docker Hub description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ matrix.repository }}
+          short-description: ${{ matrix.short-description }}
+          readme-filepath: ./README.md
