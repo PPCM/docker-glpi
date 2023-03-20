@@ -1,0 +1,1 @@
+%%SCHEDULE%% su apache -s /bin/ash -c "cd /var/www/glpi; /usr/bin/php front/cron.php" &>dev/null

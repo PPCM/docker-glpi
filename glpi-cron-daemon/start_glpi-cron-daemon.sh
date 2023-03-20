@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# Modify schedule of CRON config file
+if [ -z "${CRON_SCHEDULE}" ]
+then
+    CRON_SCHEDULE="*/2 * * * *"
+fi
+sed -i "s|%%SCHEDULE%%|${CRON_SCHEDULE}|" /etc/crontabs/glpi.cron
+
 # Modify default timezone for PHP
 sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php81/php.ini
 
@@ -14,9 +21,7 @@ do
     inotifywait -qq -t 30 -e create -e moved_to "$(dirname $done_file)"
 done
 
-echo `date` " - GLPI cron job begins"
+echo `date` " - Start CRON job"
 
 # Run GLPI cron script
-su apache -s /bin/ash -c "cd /var/www/glpi; /usr/bin/php front/cron.php"
-
-echo `date` " - GLPI cron job finished"
+/usr/sbin/crond -f
