@@ -117,3 +117,4 @@ As compensation 2 dedicated images were made for the cron task. Only one instanc
 
 - ppcm/glpi-cron : GLPI cron job, you have in charge for the scheduling - You have to start the pod each time you want to execute to cron job - The advantage of this solution is that ressources are released when it is not needed
 - ppcm/glpi-cron-daemon : GLPI cron job daemon running with scheduling managed by an environment variable - The advantage of this solution is that you don't have to care about an external solution for the cron
+
