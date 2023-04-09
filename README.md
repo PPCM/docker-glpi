@@ -24,7 +24,6 @@ This package contains with:
 - GLPI application
 - Following plugins are installed in this package:
     - [Accounts](https://github.com/InfotelGLPI/accounts)
-    - [Addressing](https://github.com/pluginsGLPI/addressing)
     - [Fields](https://github.com/pluginsGLPI/fields)
     - [Manageentities](https://github.com/InfotelGLPI/manageentities)
     - [Manufacturesimports](https://github.com/InfotelGLPI/manufacturersimports)

@@ -22,11 +22,10 @@ FROM alpine:3.17
 ENV NODE_ENV=production
 
 # Variables for versions
-ENV GLPI_VERSION="10.0.6"
+ENV GLPI_VERSION="10.0.7"
 ENV CAS_VERSION="1.6.1"
 ENV PLUGIN_ACCOUNT_VERSION="3.0.3"
-ENV PLUGIN_ADDRESSING_VERSION="3.0.1"
-ENV PLUGIN_FIELDS_VERSION="1.20.2"
+ENV PLUGIN_FIELDS_VERSION="1.20.4"
 ENV PLUGIN_MANAGEENTITIES_VERSION="4.0.3"
 ENV PLUGIN_MANUFACTURESIMPORTS_VERSION="3.0.5"
 ENV PLUGIN_MREPORTING_VERSION="1.8.2"
@@ -73,10 +72,6 @@ RUN \
 	&& wget https://github.com/InfotelGLPI/accounts/releases/download/${PLUGIN_ACCOUNT_VERSION}/glpi-accounts-${PLUGIN_ACCOUNT_VERSION}.tar.bz2 \
 	&& tar xjf glpi-accounts-${PLUGIN_ACCOUNT_VERSION}.tar.bz2 \
 	&& rm glpi-accounts-${PLUGIN_ACCOUNT_VERSION}.tar.bz2 \
-	# Installation of the plugin addressing
-	&& wget https://github.com/pluginsGLPI/addressing/releases/download/${PLUGIN_ADDRESSING_VERSION}/glpi-addressing-${PLUGIN_ADDRESSING_VERSION}.tar.bz2 \
-	&& tar xjf glpi-addressing-${PLUGIN_ADDRESSING_VERSION}.tar.bz2 \
-	&& rm glpi-addressing-${PLUGIN_ADDRESSING_VERSION}.tar.bz2 \
 	# Installation of the plugin Fields GLPI plugin
 	&& wget https://github.com/pluginsGLPI/fields/releases/download/${PLUGIN_FIELDS_VERSION}/glpi-fields-${PLUGIN_FIELDS_VERSION}.tar.bz2 \
 	&& tar xjf glpi-fields-${PLUGIN_FIELDS_VERSION}.tar.bz2 \
