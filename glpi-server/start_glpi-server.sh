@@ -18,8 +18,9 @@ EOF
 	ACTUAL_VERSION=$(echo ${ACTUAL_VERSION} | cut -d' ' -f2)
 	if [ "$2" != "${ACTUAL_VERSION}" ]
 	then
+		echo "Update plugin : " $1
 		glpi_console "glpi:plugin:deactivate $1"
-		cp -a ${HOME}/plugins/$1 plugins
+		cp -a ${HOME}/plugins/$1 /var/www/glpi/plugins
 		glpi_console "glpi:plugin:install -u glpi $1"
 		glpi_console "glpi:plugin:activate $1"
 	fi
@@ -130,9 +131,6 @@ GLPI_ACTUAL_VERSION=$(echo ${GLPI_ACTUAL_VERSION} | cut -d' ' -f2)
 echo "Current version :" ${GLPI_ACTUAL_VERSION}
 echo "Docker version :" ${GLPI_VERSION}
 
-# Set the working directory
-#cd /var/www/glpi
-
 if [ -z "${GLPI_ACTUAL_VERSION}" ]
 then
 	# Install GLPI
@@ -182,9 +180,6 @@ fi
 # Accounts plugin
 update_plugin "accounts" "${PLUGIN_ACCOUNT_VERSION}"
 
-# Addressing plugin
-update_plugin "addressing" "${PLUGIN_ADDRESSING_VERSION}"
-
 # Fields plugin
 update_plugin "fields" "${PLUGIN_FIELDS_VERSION}"
 
@@ -207,7 +202,7 @@ update_plugin "reports" "${PLUGIN_REPORTS_VERSION}"
 rm -rf /var/www/glpi/install
 
 # Remove plugins temp directory
-rm -rf ${HOME}/plugins
+#rm -rf ${HOME}/plugins
 
 # Set the Apache as owner of all files and directories
 #chown -R apache:apache /var/www/glpi

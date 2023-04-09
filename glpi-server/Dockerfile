@@ -111,8 +111,8 @@ RUN \
 	&& chown -R apache:apache marketplace
 
 # GLPI start script
-COPY start_glpi-server.sh .
-RUN chmod a+x start_glpi-server.sh
+COPY start_glpi-server.sh /root
+RUN chmod a+x /root/start_glpi-server.sh
 
 # Open port for httpd access
 EXPOSE 80
