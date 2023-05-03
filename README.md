@@ -2,7 +2,7 @@
 
 ## Supported tags
 
-- 10, 10.0, 10.0.7, 10.0.7-2, latest
+- 10, 10.0, 10.0.7, 10.0.7-3, latest
 - 10.0.6, 10.0.6-1
 
 ## Quick reference
@@ -44,7 +44,7 @@ Starting a `GLPI` instance is simple
 ```console
 $ docker network create some-network 
 $ docker run -d --name some-mariadb -p 3306:3306 --network some-network -e MARIADB_USER=glpi-user -e MARIADB_PASSWORD=glpi-password -e MARIADB_ROOT_PASSWORD=root-password -e MARIADB_DATABASE=glpi -v mysql-dir:/var/lib/mysql mariadb:latest
-$ docker run -d --name some-glpi -p 8089:80 --network some-network -e MYSQL_HOST=some-mariadb -e MYSQL_PORT=3306 -e MYSQL_ROOT_PASSWORD=root-password -e MYSQL_USER=glpi-user -e MYSQL_PASSWORD=glpi-password -e MYSQL_DATABASE=glpi -e LANG=fr_FR -e TZ="Europe/Paris" -v glpi-config:/var/glpi/config -v glpi-files:/var/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-server:latest
+$ docker run -d --name some-glpi -p 8089:80 --network some-network -e MYSQL_HOST=some-mariadb -e MYSQL_PORT=3306 -e MYSQL_ROOT_PASSWORD=root-password -e MYSQL_USER=glpi-user -e MYSQL_PASSWORD=glpi-password -e MYSQL_DATABASE=glpi -e LANG=fr_FR -e TZ="Europe/Paris" -v glpi-config:/etc/glpi -v glpi-files:/var/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-server:latest
 ````
 Now you have the choice
 - Manage the scheduling by yourself and free ressources between each launch - You have to start the pod each time you want to execute to cron job
