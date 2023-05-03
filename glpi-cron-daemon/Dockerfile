@@ -78,7 +78,7 @@ RUN chmod go-rwx /etc/crontabs/glpi.cron \
 	&& chmod a+x start_glpi-cron-daemon.sh
 
 # Mount volumes persistence
-VOLUME /var/glpi/config
+VOLUME /etc/glpi
 VOLUME /var/glpi/files
 VOLUME /var/www/glpi/plugins
 VOLUME /var/www/glpi/marketplace
