@@ -8,7 +8,7 @@ sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php81/php
 
 # Waiting for the installation to be done
 echo `date` " - Waiting GLPI to be installed from ppcm/glpi-server"
-done_file='/var/glpi/config/.installation_done'
+done_file='/etc/glpi/.installation_done'
 while [ ! -f "$done_file" ]
 do
     inotifywait -qq -t 30 -e create -e moved_to "$(dirname $done_file)"

@@ -62,7 +62,7 @@ RUN \
 	&& mv /var/www/glpi/files . \
 	&& mv /var/www/glpi/plugins . \
 	&& mv /var/www/glpi/marketplace . \
-	&& mkdir -p /var/glpi/config \
+	&& mkdir -p /etc/config \
 	&& mkdir -p /var/glpi/files \
 	&& mkdir -p /var/www/glpi/plugins \
 	&& mkdir -p /var/www/glpi/marketplace \
@@ -101,11 +101,13 @@ RUN \
 COPY downstream.php /var/www/glpi/inc
 RUN chmod a-x /var/www/glpi/inc/downstream.php
 
+# Copy specific config file
+COPY local_define.php config
+RUN chmod a-x config/local_define.php
+
 # Change the Owner of folders
 RUN \
 	chown -R apache:apache /var/www/glpi \
-	&& chown -R apache:apache /var/glpi \
-	&& chown -R apache:apache config \
 	&& chown -R apache:apache files \
 	&& chown -R apache:apache plugins \
 	&& chown -R apache:apache marketplace
@@ -118,7 +120,7 @@ RUN chmod a+x /root/start_glpi-server.sh
 EXPOSE 80
 
 # Mount volumes persistence
-VOLUME /var/glpi/config
+VOLUME /etc/glpi
 VOLUME /var/glpi/files
 VOLUME /var/www/glpi/plugins
 VOLUME /var/www/glpi/marketplace

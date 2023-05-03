@@ -1,4 +1,7 @@
 <?php
-define('GLPI_CONFIG_DIR', '/var/glpi/config');
-define('GLPI_VAR_DIR', '/var/glpi/files');
+define('GLPI_CONFIG_DIR', '/etc/glpi/');
+
+if (file_exists(GLPI_CONFIG_DIR . '/local_define.php')) {
+   require_once GLPI_CONFIG_DIR . '/local_define.php';
+}
 ?>

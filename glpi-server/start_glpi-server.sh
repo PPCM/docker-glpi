@@ -28,12 +28,12 @@ EOF
 
 # Installation is done. Set the proper file to share the information
 install_done() {
-	echo "DO NOT REMOVE" >/var/glpi/config/.installation_done
+	echo "DO NOT REMOVE" >/etc/glpi/.installation_done
 }
 
 # Update is needed. Unset the proper file to share the information
 update_in_progress() {
-	rm /var/glpi/config/.installation_done
+	rm /etc/glpi/.installation_done
 }
 
 # Check env variables
@@ -135,7 +135,7 @@ if [ -z "${GLPI_ACTUAL_VERSION}" ]
 then
 	# Install GLPI
 	echo "GLPI installation"
-	cp -a /root/config /var/glpi
+	cp -a /root/config/* /etc/glpi
 	cp -a /root/files /var/glpi
 	cp -a /root/plugins /var/www/glpi
 	cp -a /root/marketplace /var/www/glpi
@@ -152,6 +152,14 @@ then
 	# Installation done
 	install_done
 else
+
+	# Check if local_define.php is present, correct previous versions of container
+	if [ ! -f "/etc/glpi/local_define.php" ]
+		then
+			echo "Correct local_define.php file"
+			cp -a config/local_define.php /etc/glpi
+	fi
+
 	# Check GLPI version
 	if [ "${GLPI_VERSION}" != "${GLPI_ACTUAL_VERSION}" ]
 	then
