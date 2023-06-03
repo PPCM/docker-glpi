@@ -64,7 +64,6 @@ RUN chmod a-x /var/www/glpi/inc/downstream.php
 RUN \
 	chown -R apache:apache /var/www/glpi \
 	&& chown -R apache:apache /var/glpi \
-	&& chown -R apache:apache config \
 	&& chown -R apache:apache files \
 	&& chown -R apache:apache plugins \
 	&& chown -R apache:apache marketplace

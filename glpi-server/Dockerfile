@@ -25,11 +25,11 @@ ENV NODE_ENV=production
 ENV GLPI_VERSION="10.0.7"
 ENV CAS_VERSION="1.6.1"
 ENV PLUGIN_ACCOUNT_VERSION="3.0.3"
-ENV PLUGIN_FIELDS_VERSION="1.20.5"
+ENV PLUGIN_FIELDS_VERSION="1.20.6"
 ENV PLUGIN_MANAGEENTITIES_VERSION="4.0.3"
 ENV PLUGIN_MANUFACTURESIMPORTS_VERSION="3.0.5"
 ENV PLUGIN_MREPORTING_VERSION="1.8.2"
-ENV PLUGIN_NEWS_VERSION="1.10.6"
+ENV PLUGIN_NEWS_VERSION="1.12.0"
 ENV PLUGIN_REPORTS_VERSION="1.16.0"
 
 RUN apk --no-cache upgrade \
@@ -108,6 +108,7 @@ RUN chmod a-x config/local_define.php
 # Change the Owner of folders
 RUN \
 	chown -R apache:apache /var/www/glpi \
+	&& chown -R apache:apache /var/glpi \
 	&& chown -R apache:apache files \
 	&& chown -R apache:apache plugins \
 	&& chown -R apache:apache marketplace

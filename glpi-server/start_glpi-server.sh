@@ -86,6 +86,12 @@ sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php81/php.ini
 # Modify default cookie_httponly value for security purpose
 sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php81/php.ini
 
+# Modify maximum amount of memory a script may consume
+sed -i "s|memory_limit = 128M|memory_limit = 256M|" /etc/php81/php.ini
+
+# Modify maximum execution time of each script, in seconds
+sed -i "s|max_execution_time = 30|max_execution_time = 600|" /etc/php81/php.ini
+
 # Do the user and the database exist?
 if [ -z "$(mysqlshow --host=${MYSQL_HOST} --port=${MYSQL_PORT} --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} | grep ${MYSQL_DATABASE} 2>/dev/null)" ]
 then
