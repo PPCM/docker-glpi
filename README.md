@@ -50,11 +50,11 @@ $ docker run -d --name some-glpi -p 8089:80 --network some-network -e MYSQL_HOST
 Now you have the choice
 - Manage the scheduling by yourself and free ressources between each launch - You have to start the pod each time you want to execute to cron job
 ```console
-$ docker run -d --name some-glpi-cron --network some-network -e TZ="Europe/Paris" -v glpi-config:/var/glpi/config -v glpi-files:/var/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-cron:latest
+$ docker run -d --name some-glpi-cron --network some-network -e TZ="Europe/Paris" -v glpi-config:/var/glpi/config -v glpi-files:/etc/glpi -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-cron:latest
 ```
 - Launch a deamon which schedules by itself
 ```console
-$ docker run -d --name some-glpi-cron-daemon --network some-network -e CRON_SCHEDULE="*/2 * * * *" -e TZ="Europe/Paris" -v glpi-config:/var/glpi/config -v glpi-files:/var/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-cron-daemon:latest
+$ docker run -d --name some-glpi-cron-daemon --network some-network -e CRON_SCHEDULE="*/2 * * * *" -e TZ="Europe/Paris" -v glpi-config:/etc/glpi -v glpi-files:/var/glpi/files -v glpi-plugins:/var/www/glpi/plugins -v glpi-marketplace:/var/www/glpi/marketplace ppcm/glpi-cron-daemon:latest
 ```
 ### Login to GLPI
 
