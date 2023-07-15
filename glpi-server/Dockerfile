@@ -22,14 +22,14 @@ FROM alpine:3.17
 ENV NODE_ENV=production
 
 # Variables for versions
-ENV GLPI_VERSION="10.0.7"
+ENV GLPI_VERSION="10.0.9"
 ENV CAS_VERSION="1.6.1"
 ENV PLUGIN_ACCOUNT_VERSION="3.0.3"
 ENV PLUGIN_FIELDS_VERSION="1.20.6"
 ENV PLUGIN_MANAGEENTITIES_VERSION="4.0.3"
 ENV PLUGIN_MANUFACTURESIMPORTS_VERSION="3.0.5"
 ENV PLUGIN_MREPORTING_VERSION="1.8.2"
-ENV PLUGIN_NEWS_VERSION="1.12.0"
+ENV PLUGIN_NEWS_VERSION="1.12.1"
 ENV PLUGIN_REPORTS_VERSION="1.16.0"
 
 RUN apk --no-cache upgrade \
@@ -37,7 +37,7 @@ RUN apk --no-cache upgrade \
 							mariadb-client \
 		          apache2 php81-apache2 php81 \
 						  php81-curl php81-fileinfo php81-gd php81-mbstring php81-mysqli php81-session \
-						  php81-simplexml php81-xml php81-intl php81-dom php81-soap \
+						  php81-simplexml php81-xml php81-xmlreader php81-xmlwriter php81-intl php81-dom php81-soap \
 						  php81-ldap php81-pecl-apcu php81-ctype php81-sodium php81-snmp \
 						  php81-exif php81-phar php81-zip php81-bz2 php81-opcache php81-pear php81-iconv php81-pdo \
 						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools
@@ -62,7 +62,7 @@ RUN \
 	&& mv /var/www/glpi/files . \
 	&& mv /var/www/glpi/plugins . \
 	&& mv /var/www/glpi/marketplace . \
-	&& mkdir -p /etc/config \
+	&& mkdir -p /etc/glpi \
 	&& mkdir -p /var/glpi/files \
 	&& mkdir -p /var/www/glpi/plugins \
 	&& mkdir -p /var/www/glpi/marketplace \
@@ -108,6 +108,7 @@ RUN chmod a-x config/local_define.php
 # Change the Owner of folders
 RUN \
 	chown -R apache:apache /var/www/glpi \
+	&& chown -R apache:apache /etc/glpi \
 	&& chown -R apache:apache /var/glpi \
 	&& chown -R apache:apache files \
 	&& chown -R apache:apache plugins \
