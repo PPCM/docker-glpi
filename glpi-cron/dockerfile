@@ -11,7 +11,7 @@
 # VOLUME glpi-plugins - Persistence for GLPI installed plugins
 # VOLUME glpi-marketplace - Persistence for GLPI installed plugins by the marketplace
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 ENV NODE_ENV=production
 

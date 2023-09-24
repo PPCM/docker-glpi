@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Dockerfile for GLPI cron
-# Compile : docker build --no-cache -t ppcm/glpi-cron .
+# Compile : docker build --no-cache -t ppcm/glpi-cron-daemon .
 # Build multiplateform : docker buildx build --no-cache --push --platform linux/386,linux/amd64,linux/arm/v6,linux/arm64,linux/arm --tag ppcm/glpi-cron:latest .
 
 #ENV CRON_SCHEDULE - Schedule in CRON format - [cron.guru](https://crontab.guru/) can help you to define it - By default the value is "*/2 * * * *"
@@ -12,7 +12,7 @@
 # VOLUME glpi-plugins - Persistence for GLPI installed plugins
 # VOLUME glpi-marketplace - Persistence for GLPI installed plugins by the marketplace
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 ENV NODE_ENV=production
 
@@ -72,9 +72,9 @@ RUN \
 
 # GLPI cron start script and cron config
 COPY start_glpi-cron-daemon.sh .
-COPY glpi.cron /etc/crontabs/glpi.cron
-RUN chmod go-rwx /etc/crontabs/glpi.cron \
-	&& chmod u-x /etc/crontabs/glpi.cron \
+COPY glpi.cron /etc/crontabs/root
+RUN chmod go-rwx /etc/crontabs/root \
+	&& chmod u-x /etc/crontabs/root \
 	&& chmod a+x start_glpi-cron-daemon.sh
 
 # Mount volumes persistence

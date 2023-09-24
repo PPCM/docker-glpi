@@ -5,7 +5,7 @@ if [ -z "${CRON_SCHEDULE}" ]
 then
     CRON_SCHEDULE="*/2 * * * *"
 fi
-sed -i "s|%%SCHEDULE%%|${CRON_SCHEDULE}|" /etc/crontabs/glpi.cron
+sed -i "s|%%SCHEDULE%%|${CRON_SCHEDULE}|" /etc/crontabs/root
 
 # Modify default timezone for PHP
 sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php81/php.ini
@@ -24,4 +24,4 @@ done
 echo `date` " - Start CRON job"
 
 # Run GLPI cron script
-/usr/sbin/crond -f
+/usr/sbin/crond -f -L /dev/stdout -c /etc/crontabs
