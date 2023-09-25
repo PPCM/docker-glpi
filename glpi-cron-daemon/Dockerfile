@@ -17,7 +17,7 @@ FROM alpine:3.18
 ENV NODE_ENV=production
 
 # Variables for versions
-ENV GLPI_VERSION="10.0.9"
+ENV GLPI_VERSION="10.0.10"
 ENV CAS_VERSION="1.6.1"
 
 RUN apk --no-cache upgrade \
