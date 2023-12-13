@@ -103,7 +103,7 @@ Volumes must be exposed for `ppcm/glpi-server`, `ppcm/glpi-cron` and  `ppcm/glpi
 
 | Volume                    | Usage                                                     |
 |:--------------------------|:----------------------------------------------------------|
-| /var/www/glpi/config      | The configuration path of GLPI                            |
+| /etc/glpi                 | The configuration path of GLPI                            |
 | /var/www/glpi/files       | The path for stored files in GLPI                         |
 | /var/www/glpi/plugins     | The path for plugins in GLPI                              |
 | /var/www/glpi/marketplace | The path for plugins downloaded from the GLPI marketplace |
