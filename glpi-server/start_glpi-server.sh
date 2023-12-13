@@ -4,9 +4,9 @@
 # $1 : Command to run
 glpi_console() {
 	# We want this to output "${@}" without expansion
-  # shellcheck disable=SC2016
-  cd '/var/www/glpi' &&
-    su 'apache' -s '/bin/ash' -c '"${@}"' -- '/usr/bin/php' '/var/www/glpi/bin/console' "${@}"
+	# shellcheck disable=SC2016
+	cd '/var/www/glpi' &&
+		su 'apache' -s '/bin/ash' -c '"${@}"' -- '/usr/bin/php' '/var/www/glpi/bin/console' "${@}"
 }
 
 
@@ -52,23 +52,23 @@ then
 fi
 if [ -z "${MYSQL_PORT}" ]
 then
-    MYSQL_PORT="3306"
+	MYSQL_PORT="3306"
 fi
 if [ -z "${MYSQL_DATABASE}" ]
 then
-    MYSQL_DATABASE="glpi"
+	MYSQL_DATABASE="glpi"
 fi
 if [ -z "${MYSQL_USER}" ]
 then
-    MYSQL_USER="glpi"
+	MYSQL_USER="glpi"
 fi
 if [ -z "${MYSQL_PASSWORD}" ]
 then
-    MYSQL_PASSWORD="glpi-password"
+	MYSQL_PASSWORD="glpi-password"
 fi
 if [ -z "${LANG}" ]
 then
-    LANG="fr_FR"
+	LANG="fr_FR"
 fi
 if [ -z "${TZ}" ]
 then
@@ -114,7 +114,7 @@ fi
 if [ -n "${MYSQL_ROOT_PASSWORD}" ]
 then
 	# Allow GLPI user to access to GLPI database
-	mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}"  << EOF
+	mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}"	<< EOF
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}';
 USE mysql;
 GRANT SELECT ON mysql.time_zone_name TO '${MYSQL_USER}';
