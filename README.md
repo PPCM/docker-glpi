@@ -90,7 +90,7 @@ For example, you can use the popular nginx-proxy and docker-letsencrypt-nginx-pr
 |:--------------------|:-------:|:---------------------:|:--------------:|:----------------:|:-------------:|:------------------------------------------|
 | MYSQL_HOST          |         |                       |                | X                |               | MANDATORY - MySQL or MariaDB host name    |
 | MYSQL_PORT          |         |                       |                | X                | 3306          | MySQL or MariaDB host port                |
-| MYSQL_ROOT_PASSWORD | X       |                       |                | X                |               | MySQL or MariaDB root password, it is needed to create database and user. It is also needed to configure properly the user |
+| MYSQL_ROOT_PASSWORD | X       |                       |                | X                |               | MySQL or MariaDB root password, it is needed to create database and user. If you already configured the user and the database, it is not mandatory |
 | MYSQL_USER          | X       |                       |                | X                | glpi-user     | MySQL or MariaDB GLPI username            |
 | MYSQL_PASSWORD      | X       |                       |                | X                | glpi-password | MySQL or MariaDB password for GLPI user   |
 | MYSQL_DATABASE      | X       |                       |                | X                | glpi          | MySQL or MariaDB database name for GLPI   |

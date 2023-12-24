@@ -17,12 +17,12 @@
 # VOLUME glpi-plugins - Persistence for GLPI installed plugins
 # VOLUME glpi-marketplace - Persistence for GLPI installed plugins by the marketplace
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 ENV NODE_ENV=production
 
 # Variables for versions
-ENV GLPI_VERSION="10.0.10"
+ENV GLPI_VERSION="10.0.11"
 ENV CAS_VERSION="1.6.1"
 ENV PLUGIN_ACCOUNT_VERSION="3.0.3"
 ENV PLUGIN_FIELDS_VERSION="1.21.6"
@@ -35,11 +35,11 @@ ENV PLUGIN_REPORTS_VERSION="1.16.0"
 RUN apk --no-cache upgrade \
     && apk add --no-cache \
 							mariadb-client \
-		          apache2 php81-apache2 php81 \
-						  php81-curl php81-fileinfo php81-gd php81-mbstring php81-mysqli php81-session \
-						  php81-simplexml php81-xml php81-xmlreader php81-xmlwriter php81-intl php81-dom php81-soap \
-						  php81-ldap php81-pecl-apcu php81-ctype php81-sodium php81-snmp \
-						  php81-exif php81-phar php81-zip php81-bz2 php81-opcache php81-pear php81-iconv php81-pdo \
+		          apache2 php82-apache2 php82 \
+						  php82-curl php82-fileinfo php82-gd php82-mbstring php82-mysqli php82-session \
+						  php82-simplexml php82-xml php82-xmlreader php82-xmlwriter php82-intl php82-dom php82-soap \
+						  php82-ldap php82-pecl-apcu php82-ctype php82-sodium php82-snmp \
+						  php82-exif php82-phar php82-zip php82-bz2 php82-opcache php82-pear php82-iconv php82-pdo \
 						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools
 
 # Working directory to root
