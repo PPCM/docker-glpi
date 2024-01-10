@@ -79,36 +79,46 @@ sed -i "s|memory_limit = 128M|memory_limit = 256M|" /etc/php82/php.ini
 # Modify maximum execution time of each script, in seconds
 sed -i "s|max_execution_time = 30|max_execution_time = 600|" /etc/php82/php.ini
 
-# Do the user and the database exist?
-if [ -z "$(mysqlshow --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" | grep "${MYSQL_DATABASE}" 2>/dev/null)" ]
+# Does the GLPI database config file exists
+if [ ! -f '/etc/glpi/config_db.php' ]
 then
+	echo 'Config file does not exist'
 
-	# Check  if MYSQL_ROOT_PASSWORD exists
-	if [ -z "${MYSQL_ROOT_PASSWORD}" ]
+	# Do the user and the database exist?
+	if [ -z "$(mysqlshow --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" | grep "${MYSQL_DATABASE}" 2>/dev/null)" ]
 	then
-		echo 'GLPI user or/and GLPI database doesn'"'"'t exists, MYSQL_ROOT_PASSWORD must be set'
-		exit 1
-	fi
 
-	# Does the database exist
-	if [ -z "$(mysqlshow --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" | grep "${MYSQL_DATABASE}")" ]
-	then
-		# Creation of the Database
-		echo "MySQL Database creation : '${MYSQL_DATABASE}'"
-		mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" << EOF
+		# Check  if MYSQL_ROOT_PASSWORD exists
+		if [ -z "${MYSQL_ROOT_PASSWORD}" ]
+		then
+			echo 'GLPI user or/and GLPI database doesn'"'"'t exists, MYSQL_ROOT_PASSWORD must be set'
+			exit 1
+		fi
+
+		# Does the database exist
+		if [ -z "$(mysqlshow --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" | grep "${MYSQL_DATABASE}")" ]
+		then
+			# Creation of the Database
+			echo "MySQL Database creation : '${MYSQL_DATABASE}'"
+			mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" << EOF
 CREATE DATABASE ${MYSQL_DATABASE};
 EOF
-	fi
+		fi
 
-	# Does the user exist
-	if [ -z "$(mysql --host="${MYSQL_HOST}" --user=root --password="${MYSQL_ROOT_PASSWORD}" --database=mysql -e "SELECT User FROM user WHERE User LIKE '${MYSQL_USER}'" | grep "${MYSQL_USER}")" ]
-	then
-		echo "MySQL user creation : ${MYSQL_USER}"
-		mysql --host=${MYSQL_HOST} --port=${MYSQL_PORT} --user=root --password=${MYSQL_ROOT_PASSWORD} << EOF
+		# Does the user exist
+		if [ -z "$(mysql --host="${MYSQL_HOST}" --user=root --password="${MYSQL_ROOT_PASSWORD}" --database=mysql -e "SELECT User FROM user WHERE User LIKE '${MYSQL_USER}'" | grep "${MYSQL_USER}")" ]
+		then
+			echo "MySQL user creation : ${MYSQL_USER}"
+			mysql --host=${MYSQL_HOST} --port=${MYSQL_PORT} --user=root --password=${MYSQL_ROOT_PASSWORD} << EOF
 CREATE USER '${MYSQL_USER}' IDENTIFIED BY '${MYSQL_PASSWORD}';
 EOF
+		fi
+	fi
 
-		# Allow GLPI user to access to GLPI database
+	# Allow GLPI user to access to GLPI database only if MYSQL_ROOT_PASSWORD is set
+	if [ -n "${MYSQL_ROOT_PASSWORD}" ]
+	then
+		echo "MySQL grant user : ${MYSQL_USER}"
 		mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}"  << EOF
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}';
 USE mysql;
@@ -132,7 +142,7 @@ if [ -z "${GLPI_ACTUAL_VERSION}" ]
 then
 	# Install GLPI
 	echo "GLPI installation"
-	cp -a /root/config/* /etc/glpi
+	cp -a -- /root/config/* /etc/glpi
 	cp -a /root/files /var/glpi
 	cp -a /root/plugins /var/www/glpi
 	cp -a /root/marketplace /var/www/glpi
