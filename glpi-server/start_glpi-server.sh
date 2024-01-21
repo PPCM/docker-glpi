@@ -94,6 +94,10 @@ if [ -z "${PLUGIN_REPORTS_ACTIVE}" ]
 then
 	PLUGIN_REPORTS_ACTIVE=1
 fi
+if [ -z "${PLUGIN_GLPIINVENTORY_ACTIVE}" ]
+then
+	PLUGIN_GLPIINVENTORY_ACTIVE=1
+fi
 
 # Modify default timezone for PHP
 sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php82/php.ini
@@ -246,6 +250,12 @@ fi
 if [ -n "${PLUGIN_REPORTS_ACTIVE}" ] && [ "${PLUGIN_REPORTS_ACTIVE}" != "0" ]
 then
 	update_plugin 'reports' "${PLUGIN_REPORTS_VERSION}"
+fi
+
+# GLPI Inventory plugin
+if [ -n "${PLUGIN_GLPIINVENTORY_ACTIVE}" ] && [ "${PLUGIN_GLPIINVENTORY_ACTIVE}" != "0" ]
+then
+	update_plugin 'glpiinventory' "${PLUGIN_GLPIINVENTORY_VERSION}"
 fi
 
 # Remove glpi install directory

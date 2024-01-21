@@ -33,6 +33,7 @@ This package contains with:
     - [More reporting](https://github.com/pluginsGLPI/mreporting)
     - [News](https://github.com/pluginsGLPI/news)
     - [Additional Reports](https://github.com/yllen/reports)
+    - [GLPI Inventory](https://github.com/glpi-project/glpi-inventory-plugin)
 
 Description of each image
 - ppcm/glpi-server : GLPI web server with the UI
@@ -98,13 +99,14 @@ For example, you can use the popular nginx-proxy and docker-letsencrypt-nginx-pr
 | TZ                                |         | X                     | X              | X                | Europe/Paris  | Timezone of the web server                           |
 | CRON_SCHEDULE                     |         | X                     |                |                  | */2 * * * *   | Schedule in CRON format - [cron.guru](https://crontab.guru/) can help you to define it |
 |
-| PLUGIN_ACCOUNT_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Accounts            |
-| PLUGIN_FIELDS_ACTIVE              |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Fields              |
-| PLUGIN_MANAGEENTITIES_ACTIVE      |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Manageentities      |
-| PLUGIN_MANUFACTURESIMPORTS_ACTIVE |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Manufacturesimports |
-| PLUGIN_MREPORTING_ACTIVE          |         |                       |                | X                | 1             | Install / Update / Actuve Plugin More reporting      |
-| PLUGIN_NEWS_ACTIVE                |         |                       |                | X                | 1             | Install / Update / Actuve Plugin News                |
-| PLUGIN_REPORTS_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Additional Reports  |
+| PLUGIN_ACCOUNT_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Active Plugin Accounts            |
+| PLUGIN_FIELDS_ACTIVE              |         |                       |                | X                | 1             | Install / Update / Active Plugin Fields              |
+| PLUGIN_MANAGEENTITIES_ACTIVE      |         |                       |                | X                | 1             | Install / Update / Active Plugin Manageentities      |
+| PLUGIN_MANUFACTURESIMPORTS_ACTIVE |         |                       |                | X                | 1             | Install / Update / Active Plugin Manufacturesimports |
+| PLUGIN_MREPORTING_ACTIVE          |         |                       |                | X                | 1             | Install / Update / Active Plugin More reporting      |
+| PLUGIN_NEWS_ACTIVE                |         |                       |                | X                | 1             | Install / Update / Active Plugin News                |
+| PLUGIN_REPORTS_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Active Plugin Additional Reports  |
+| PLUGIN_GLPIINVENTORY_ACTIVE       |         |                       |                | X                | 1             | Install / Update / Active Plugin GLPI Inventory      |
 
 For plugins variables, any content, except 0, will install, update and activate the plugin.
 
