@@ -98,7 +98,6 @@ For example, you can use the popular nginx-proxy and docker-letsencrypt-nginx-pr
 | LANG                              |         |                       |                | X                | fr_FR         | Default language of GLPI                             |
 | TZ                                |         | X                     | X              | X                | Europe/Paris  | Timezone of the web server                           |
 | CRON_SCHEDULE                     |         | X                     |                |                  | */2 * * * *   | Schedule in CRON format - [cron.guru](https://crontab.guru/) can help you to define it |
-|
 | PLUGIN_ACCOUNT_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Active Plugin Accounts            |
 | PLUGIN_FIELDS_ACTIVE              |         |                       |                | X                | 1             | Install / Update / Active Plugin Fields              |
 | PLUGIN_MANAGEENTITIES_ACTIVE      |         |                       |                | X                | 1             | Install / Update / Active Plugin Manageentities      |
