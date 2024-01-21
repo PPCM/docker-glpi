@@ -86,6 +86,7 @@ As most of available docker image on the internet, it is recommend using a rever
 For example, you can use the popular nginx-proxy and docker-letsencrypt-nginx-proxy-companion containers or Traefik to handle this.
 
 #### Environments variables
+For plugins variables, any content, except 0, will install, update and activate the plugin.
 
 | Environment                       | mariadb | ppcm/glpi-cron-deamon | ppcm/glpi-cron | ppcm/glpi-server | Default       | Usage                                                |
 |:----------------------------------|:-------:|:---------------------:|:--------------:|:----------------:|:-------------:|:-----------------------------------------------------|
@@ -106,8 +107,6 @@ For example, you can use the popular nginx-proxy and docker-letsencrypt-nginx-pr
 | PLUGIN_NEWS_ACTIVE                |         |                       |                | X                | 1             | Install / Update / Active Plugin News                |
 | PLUGIN_REPORTS_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Active Plugin Additional Reports  |
 | PLUGIN_GLPIINVENTORY_ACTIVE       |         |                       |                | X                | 1             | Install / Update / Active Plugin GLPI Inventory      |
-
-For plugins variables, any content, except 0, will install, update and activate the plugin.
 
 #### Exposed volumes
 Volumes must be exposed for `ppcm/glpi-server`, `ppcm/glpi-cron` and  `ppcm/glpi-cron-daemon`
