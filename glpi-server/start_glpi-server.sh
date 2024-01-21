@@ -18,11 +18,11 @@ EOF
 	if [ "$2" != "${ACTUAL_VERSION}" ]
 	then
 		echo "Update plugin : " $1
-		glpi_console 'glpi:plugin:deactivate' "'""$1""'"
+		[ ! -d "/var/www/glpi/plugins/$1" ] || glpi_console 'glpi:plugin:deactivate' "'""$1""'"
 		cp -a "${HOME}/plugins/$1" '/var/www/glpi/plugins'
 		glpi_console 'glpi:plugin:install' -u 'glpi' "'""$1""'"
-		glpi_console 'glpi:plugin:activate' "'""$1""'"
 	fi
+	glpi_console 'glpi:plugin:activate' "'""$1""'"
 }
 
 # Installation is done. Set the proper file to share the information
@@ -65,6 +65,34 @@ fi
 if [ -z "${TZ}" ]
 then
 	TZ='Europe/Paris'
+fi
+if [ -z "${PLUGIN_ACCOUNT_ACTIVE}" ]
+then
+	PLUGIN_ACCOUNT_ACTIVE=1
+fi
+if [ -z "${PLUGIN_FIELDS_ACTIVE}" ]
+then
+	PLUGIN_FIELDS_ACTIVE=1
+fi
+if [ -z "${PLUGIN_MANAGEENTITIES_ACTIVE}" ]
+then
+	PLUGIN_MANAGEENTITIES_ACTIVE=1
+fi
+if [ -z "${PLUGIN_MANUFACTURESIMPORTS_ACTIVE}" ]
+then
+	PLUGIN_MANUFACTURESIMPORTS_ACTIVE=1
+fi
+if [ -z "${PLUGIN_MREPORTING_ACTIVE}" ]
+then
+	PLUGIN_MREPORTING_ACTIVE=1
+fi
+if [ -z "${PLUGIN_NEWS_ACTIVE}" ]
+then
+	PLUGIN_NEWS_ACTIVE=1
+fi
+if [ -z "${PLUGIN_REPORTS_ACTIVE}" ]
+then
+	PLUGIN_REPORTS_ACTIVE=1
 fi
 
 # Modify default timezone for PHP
@@ -144,17 +172,10 @@ then
 	echo "GLPI installation"
 	cp -a -- /root/config/* /etc/glpi
 	cp -a /root/files /var/glpi
-	cp -a /root/plugins /var/www/glpi
+	#cp -a /root/plugins /var/www/glpi
+	mkdir -p /var/www/glpi/plugins
 	cp -a /root/marketplace /var/www/glpi
 	glpi_console -n 'db:install' --db-host="'""${MYSQL_HOST}""'" --db-port="'""${MYSQL_PORT}""'" --db-name="'""${MYSQL_DATABASE}""'" --db-user="'""${MYSQL_USER}""'" --db-password="'""${MYSQL_PASSWORD}""'" --default-language="'""${LANG}""'"
-
-	# Install plugins
-	echo "Plugins installation"
-	glpi_console 'glpi:plugin:install' -u 'glpi' --all
-	glpi_console 'glpi:plugin:activate' --all
-
-	# Set the Apache as owner of all files and directories
-	#chown -R apache:apache /var/www/glpi
 
 	# Installation done
 	install_done
@@ -179,10 +200,6 @@ else
 		# Launch the update
 		glpi_console -n 'db:update'
 
-		# Reactivate all plugins
-		echo 'Plugins activation'
-		glpi_console 'glpi:plugin:activate' --all
-
 		# Update done
 		install_done
 	fi
@@ -190,25 +207,46 @@ fi
 
 # Check plugins version
 # Accounts plugin
-update_plugin 'accounts' "${PLUGIN_ACCOUNT_VERSION}"
+if [ -n "${PLUGIN_ACCOUNT_ACTIVE}" ] && [ "${PLUGIN_ACCOUNT_ACTIVE}" != "0" ]
+then
+	update_plugin 'accounts' "${PLUGIN_ACCOUNT_VERSION}"
+fi
 
 # Fields plugin
-update_plugin 'fields' "${PLUGIN_FIELDS_VERSION}"
+if [ -n "${PLUGIN_FIELDS_ACTIVE}" ] && [ "${PLUGIN_FIELDS_ACTIVE}" != "0" ]
+then
+	update_plugin 'fields' "${PLUGIN_FIELDS_VERSION}"
+fi
 
 # Manage Entities plugin
-update_plugin 'manageentities' "${PLUGIN_MANAGEENTITIES_VERSION}"
+if [ -n "${PLUGIN_MANAGEENTITIES_ACTIVE}" ] && [ "${PLUGIN_MANAGEENTITIES_ACTIVE}" != "0" ]
+then
+	update_plugin 'manageentities' "${PLUGIN_MANAGEENTITIES_VERSION}"
+fi
 
 # Manufacturers Imports plugin
-update_plugin 'manufacturersimports' "${PLUGIN_MANUFACTURESIMPORTS_VERSION}"
+if [ -n "${PLUGIN_MANUFACTURESIMPORTS_ACTIVE}" ] && [ "${PLUGIN_MANUFACTURESIMPORTS_ACTIVE}" != "0" ]
+then
+	update_plugin 'manufacturersimports' "${PLUGIN_MANUFACTURESIMPORTS_VERSION}"
+fi
 
 # MReports plugin
-update_plugin 'mreporting' "${PLUGIN_MREPORTING_VERSION}"
+if [ -n "${PLUGIN_MREPORTING_ACTIVE}" ] && [ "${PLUGIN_MREPORTING_ACTIVE}" != "0" ]
+then
+	update_plugin 'mreporting' "${PLUGIN_MREPORTING_VERSION}"
+fi
 
 # News plugin
-update_plugin 'news' "${PLUGIN_NEWS_VERSION}"
+if [ -n "${PLUGIN_NEWS_ACTIVE}" ] && [ "${PLUGIN_NEWS_ACTIVE}" != "0" ]
+then
+	update_plugin 'news' "${PLUGIN_NEWS_VERSION}"
+fi
 
 # Reports plugin
-update_plugin 'reports' "${PLUGIN_REPORTS_VERSION}"
+if [ -n "${PLUGIN_REPORTS_ACTIVE}" ] && [ "${PLUGIN_REPORTS_ACTIVE}" != "0" ]
+then
+	update_plugin 'reports' "${PLUGIN_REPORTS_VERSION}"
+fi
 
 # Remove glpi install directory
 rm -rf '/var/www/glpi/install'

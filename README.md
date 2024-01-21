@@ -86,17 +86,27 @@ For example, you can use the popular nginx-proxy and docker-letsencrypt-nginx-pr
 
 #### Environments variables
 
-| Environment         | mariadb | ppcm/glpi-cron-deamon | ppcm/glpi-cron | ppcm/glpi-server | Default       | Usage                                     |
-|:--------------------|:-------:|:---------------------:|:--------------:|:----------------:|:-------------:|:------------------------------------------|
-| MYSQL_HOST          |         |                       |                | X                |               | MANDATORY - MySQL or MariaDB host name    |
-| MYSQL_PORT          |         |                       |                | X                | 3306          | MySQL or MariaDB host port                |
-| MYSQL_ROOT_PASSWORD | X       |                       |                | X                |               | MySQL or MariaDB root password, it is needed to create database and user. If you already configured the user and the database, it is not mandatory |
-| MYSQL_USER          | X       |                       |                | X                | glpi-user     | MySQL or MariaDB GLPI username            |
-| MYSQL_PASSWORD      | X       |                       |                | X                | glpi-password | MySQL or MariaDB password for GLPI user   |
-| MYSQL_DATABASE      | X       |                       |                | X                | glpi          | MySQL or MariaDB database name for GLPI   |
-| LANG                |         |                       |                | X                | fr_FR         | Default language of GLPI                  |
-| TZ                  |         | X                     | X              | X                | Europe/Paris  | Timezone of the web server                |
-| CRON_SCHEDULE       |         | X                     |                |                  | */2 * * * *   | Schedule in CRON format - [cron.guru](https://crontab.guru/) can help you to define it |
+| Environment                       | mariadb | ppcm/glpi-cron-deamon | ppcm/glpi-cron | ppcm/glpi-server | Default       | Usage                                                |
+|:----------------------------------|:-------:|:---------------------:|:--------------:|:----------------:|:-------------:|:-----------------------------------------------------|
+| MYSQL_HOST                        |         |                       |                | X                |               | MANDATORY - MySQL or MariaDB host name               |
+| MYSQL_PORT                        |         |                       |                | X                | 3306          | MySQL or MariaDB host port                           |
+| MYSQL_ROOT_PASSWORD               | X       |                       |                | X                |               | MySQL or MariaDB root password, it is needed to create database and user. If you already configured the user and the database, it is not mandatory |
+| MYSQL_USER                        | X       |                       |                | X                | glpi-user     | MySQL or MariaDB GLPI username                       |
+| MYSQL_PASSWORD                    | X       |                       |                | X                | glpi-password | MySQL or MariaDB password for GLPI user              |
+| MYSQL_DATABASE                    | X       |                       |                | X                | glpi          | MySQL or MariaDB database name for GLPI              |
+| LANG                              |         |                       |                | X                | fr_FR         | Default language of GLPI                             |
+| TZ                                |         | X                     | X              | X                | Europe/Paris  | Timezone of the web server                           |
+| CRON_SCHEDULE                     |         | X                     |                |                  | */2 * * * *   | Schedule in CRON format - [cron.guru](https://crontab.guru/) can help you to define it |
+|
+| PLUGIN_ACCOUNT_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Accounts            |
+| PLUGIN_FIELDS_ACTIVE              |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Fields              |
+| PLUGIN_MANAGEENTITIES_ACTIVE      |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Manageentities      |
+| PLUGIN_MANUFACTURESIMPORTS_ACTIVE |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Manufacturesimports |
+| PLUGIN_MREPORTING_ACTIVE          |         |                       |                | X                | 1             | Install / Update / Actuve Plugin More reporting      |
+| PLUGIN_NEWS_ACTIVE                |         |                       |                | X                | 1             | Install / Update / Actuve Plugin News                |
+| PLUGIN_REPORTS_ACTIVE             |         |                       |                | X                | 1             | Install / Update / Actuve Plugin Additional Reports  |
+
+For plugins variables, any content, except 0, will install, update and activate the plugin.
 
 #### Exposed volumes
 Volumes must be exposed for `ppcm/glpi-server`, `ppcm/glpi-cron` and  `ppcm/glpi-cron-daemon`
