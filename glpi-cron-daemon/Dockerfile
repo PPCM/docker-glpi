@@ -27,7 +27,7 @@ RUN apk --no-cache upgrade \
 						  php82-simplexml php82-xml php82-xmlreader php82-xmlwriter php82-intl php82-dom php82-soap \
 						  php82-ldap php82-pecl-apcu php82-ctype php82-sodium php82-snmp \
 						  php82-exif php82-phar php82-zip php82-bz2 php82-opcache php82-pear php82-iconv php82-pdo \
-						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools
+						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools tzdata
 
 # Working directory to root
 WORKDIR /root

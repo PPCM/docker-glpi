@@ -99,6 +99,9 @@ then
 	PLUGIN_GLPIINVENTORY_ACTIVE=1
 fi
 
+# Set the timezone of the OS
+ln -s /usr/share/zoneinfo/$TZ /etc/localtime
+
 # Modify default timezone for PHP
 sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php82/php.ini
 
