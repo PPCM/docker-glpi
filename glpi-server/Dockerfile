@@ -25,7 +25,7 @@ ENV NODE_ENV=production
 ENV GLPI_VERSION="10.0.16"
 ENV CAS_VERSION="1.6.1"
 ENV PLUGIN_ACCOUNT_VERSION="3.0.4"
-ENV PLUGIN_FIELDS_VERSION="1.21.12"
+ENV PLUGIN_FIELDS_VERSION="1.21.13"
 ENV PLUGIN_MANAGEENTITIES_VERSION="4.0.3"
 ENV PLUGIN_MANUFACTURESIMPORTS_VERSION="3.0.8"
 ENV PLUGIN_MREPORTING_VERSION="1.8.6"
@@ -97,6 +97,7 @@ RUN \
 	&& wget https://github.com/yllen/reports/releases/download/v${PLUGIN_REPORTS_VERSION}/glpi-reports-${PLUGIN_REPORTS_VERSION}.tar.gz \
 	&& tar xzf glpi-reports-${PLUGIN_REPORTS_VERSION}.tar.gz \
 	&& rm glpi-reports-${PLUGIN_REPORTS_VERSION}.tar.gz \
+	# Installation of the plugin GLPI Inventory
 	&& wget https://github.com/glpi-project/glpi-inventory-plugin/releases/download/${PLUGIN_GLPIINVENTORY_VERSION}/glpi-glpiinventory-${PLUGIN_GLPIINVENTORY_VERSION}.tar.bz2 \
 	&& tar xjf glpi-glpiinventory-${PLUGIN_GLPIINVENTORY_VERSION}.tar.bz2 \
 	&& rm glpi-glpiinventory-${PLUGIN_GLPIINVENTORY_VERSION}.tar.bz2
