@@ -17,16 +17,16 @@ FROM alpine:3.19.1
 ENV NODE_ENV=production
 
 # Variables for versions
-ENV GLPI_VERSION="10.0.16"
+ENV GLPI_VERSION="10.0.17"
 ENV CAS_VERSION="1.6.1"
 
 RUN apk --no-cache upgrade \
     && apk add --no-cache \
-		          php82 \
-						  php82-curl php82-fileinfo php82-gd php82-mbstring php82-mysqli php82-session \
-						  php82-simplexml php82-xml php82-xmlreader php82-xmlwriter php82-intl php82-dom php82-soap \
-						  php82-ldap php82-pecl-apcu php82-ctype php82-sodium php82-snmp \
-						  php82-exif php82-phar php82-zip php82-bz2 php82-opcache php82-pear php82-iconv php82-pdo \
+		          php83 \
+						  php83-curl php83-fileinfo php83-gd php83-mbstring php83-mysqli php83-session \
+						  php83-simplexml php83-xml php83-xmlreader php83-xmlwriter php83-intl php83-dom php83-soap \
+						  php83-ldap php83-pecl-apcu php83-ctype php83-sodium php83-snmp \
+						  php83-exif php83-phar php83-zip php83-bz2 php83-opcache php83-pear php83-iconv php83-pdo \
 						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools tzdata
 
 # Working directory to root
