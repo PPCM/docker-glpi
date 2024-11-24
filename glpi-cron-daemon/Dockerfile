@@ -26,7 +26,7 @@ RUN apk --no-cache upgrade \
 						  php83-curl php83-fileinfo php83-gd php83-mbstring php83-mysqli php83-session \
 						  php83-simplexml php83-xml php83-xmlreader php83-xmlwriter php83-intl php83-dom php83-soap \
 						  php83-ldap php83-pecl-apcu php83-ctype php83-sodium php83-snmp \
-						  php83-exif php83-phar php83-zip php83-bz2 php83-opcache php83-pear php83-iconv php83-pdo \
+						  php83-exif php83-phar php83-zip php83-bz2 php83-opcache php83-iconv php83-pdo \
 						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools tzdata
 
 # Working directory to root
@@ -38,10 +38,6 @@ RUN \
 	mkdir -p /var/www/glpi \
 	&& addgroup -g 101 apache \
 	&& adduser -u 100 -H -D -h /var/www -s /sbin/nologin -G apache -g 'apache' apache \
-	# Installation of phpCAS
-	&& wget https://github.com/apereo/phpCAS/releases/download/${CAS_VERSION}/CAS-${CAS_VERSION}.tgz \
-	&& pear install CAS-${CAS_VERSION}.tgz \
-	&& rm CAS-${CAS_VERSION}.tgz \
 	# Installation of GLPI
 	&& wget https://github.com/glpi-project/glpi/releases/download/${GLPI_VERSION}/glpi-${GLPI_VERSION}.tgz \
   && tar xzf glpi-${GLPI_VERSION}.tgz \
