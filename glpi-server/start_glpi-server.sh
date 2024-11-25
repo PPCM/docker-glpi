@@ -103,16 +103,16 @@ fi
 ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
 # Modify default timezone for PHP
-sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php82/php.ini
+sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php83/php.ini
 
 # Modify default cookie_httponly value for security purpose
-sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php82/php.ini
+sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php83/php.ini
 
 # Modify maximum amount of memory a script may consume
-sed -i "s|memory_limit = 128M|memory_limit = 256M|" /etc/php82/php.ini
+sed -i "s|memory_limit = 128M|memory_limit = 256M|" /etc/php83/php.ini
 
 # Modify maximum execution time of each script, in seconds
-sed -i "s|max_execution_time = 30|max_execution_time = 600|" /etc/php82/php.ini
+sed -i "s|max_execution_time = 30|max_execution_time = 600|" /etc/php83/php.ini
 
 # Does the GLPI database config file exists
 if [ ! -f '/etc/glpi/config_db.php' ]
