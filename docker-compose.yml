@@ -1,0 +1,59 @@
+version: "3.2" 
+
+volumes:
+  mysql-dir:
+  glpi-config:
+  glpi-files:
+  glpi-plugins:
+  glpi-marketplace:
+
+services:
+  some-mariadb:
+    env_file: .env
+    image: 'mariadb:latest'
+    ports:
+      - '3306:3306'
+    networks:
+      - some-network
+    volumes:
+      - "mysql-dir:/var/lib/mysql"
+    healthcheck:
+      test: "/usr/bin/mariadb --user=\"${MARIADB_USER}\" --password=\"${MARIADB_PASSWORD}\" --execute \"SHOW DATABASES;\" \"${MARIADB_DATABASE}\""
+      start_period: 1m
+      start_interval: 10s
+      interval: 1m
+      timeout: 5s
+      retries: 3
+
+  some-glpi:
+    env_file: .env
+    image: "ppcm/glpi-server:${APP_VER}"
+    ports:
+      - '8089:80'
+    networks:
+      - some-network
+    depends_on:
+      some-mariadb:
+        condition: service_healthy
+    volumes:
+      - "glpi-config:/etc/glpi"
+      - "glpi-files:/var/glpi/files"
+      - "glpi-plugins:/var/www/glpi/plugins"
+      - "glpi-marketplace:/var/www/glpi/marketplace"
+
+  some-glpi-cron:
+    env_file: .env
+    image: "ppcm/glpi-cron-daemon:${APP_VER}"
+    networks:
+      - some-network
+    depends_on:
+      - some-glpi
+    volumes:
+      - "glpi-config:/etc/glpi"
+      - "glpi-files:/var/glpi/files"
+      - "glpi-plugins:/var/www/glpi/plugins"
+      - "glpi-marketplace:/var/www/glpi/marketplace"
+
+networks:
+  some-network:
+    name: some-network
