@@ -12,22 +12,24 @@
 # VOLUME glpi-plugins - Persistence for GLPI installed plugins
 # VOLUME glpi-marketplace - Persistence for GLPI installed plugins by the marketplace
 
-FROM alpine:3.19.1
+FROM alpine:3.22
 
 ENV NODE_ENV=production
 
 # Variables for versions
-ENV GLPI_VERSION="10.0.18"
-ENV CAS_VERSION="1.6.1"
+ENV PHP_VERSION="84"
+ENV GLPI_VERSION="10.0.19"
 
 RUN apk --no-cache upgrade \
     && apk add --no-cache \
-		          php83 \
-						  php83-curl php83-fileinfo php83-gd php83-mbstring php83-mysqli php83-session \
-						  php83-simplexml php83-xml php83-xmlreader php83-xmlwriter php83-intl php83-dom php83-soap \
-						  php83-ldap php83-pecl-apcu php83-ctype php83-sodium php83-snmp \
-						  php83-exif php83-phar php83-zip php83-bz2 php83-opcache php83-iconv php83-pdo \
-						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools tzdata
+		          php${PHP_VERSION} \
+						  php${PHP_VERSION}-curl php${PHP_VERSION}-fileinfo php${PHP_VERSION}-gd php${PHP_VERSION}-mbstring php${PHP_VERSION}-mysqli php${PHP_VERSION}-session \
+						  php${PHP_VERSION}-simplexml php${PHP_VERSION}-xml php${PHP_VERSION}-xmlreader php${PHP_VERSION}-xmlwriter php${PHP_VERSION}-intl php${PHP_VERSION}-dom php${PHP_VERSION}-soap \
+						  php${PHP_VERSION}-ldap php${PHP_VERSION}-pecl-apcu php${PHP_VERSION}-ctype php${PHP_VERSION}-sodium php${PHP_VERSION}-snmp \
+						  php${PHP_VERSION}-exif php${PHP_VERSION}-phar php${PHP_VERSION}-zip php${PHP_VERSION}-bz2 php${PHP_VERSION}-opcache php${PHP_VERSION}-iconv php${PHP_VERSION}-pdo \
+						  nmap perl perl-net-snmp perl-crypt-des perl-digest-hmac wget inotify-tools tzdata \
+		&& ln -s /usr/bin/php${PHP_VERSION} /usr/bin/php \
+		&& ln -s /usr/bin/pear${PHP_VERSION} /usr/bin/pear
 
 # Working directory to root
 WORKDIR /root

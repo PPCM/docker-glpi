@@ -10,7 +10,7 @@ glpi_console() {
 # $1 : folder of the plugin
 # $2 : required version of the plugin
 update_plugin() {
-	ACTUAL_VERSION=$(mysql --host="${MYSQL_HOST}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --database="${MYSQL_DATABASE}" 2>/dev/null << EOF
+	ACTUAL_VERSION=$(mariadb --host="${MYSQL_HOST}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --database="${MYSQL_DATABASE}" 2>/dev/null << EOF
 SELECT version FROM glpi_plugins WHERE directory LIKE '$1';
 EOF
 	)
@@ -103,16 +103,16 @@ fi
 ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
 # Modify default timezone for PHP
-sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php83/php.ini
+sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php${PHP_VERSION}/php.ini
 
 # Modify default cookie_httponly value for security purpose
-sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php83/php.ini
+sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php${PHP_VERSION}/php.ini
 
 # Modify maximum amount of memory a script may consume
-sed -i "s|memory_limit = 128M|memory_limit = 256M|" /etc/php83/php.ini
+sed -i "s|memory_limit = 128M|memory_limit = 256M|" /etc/php${PHP_VERSION}/php.ini
 
 # Modify maximum execution time of each script, in seconds
-sed -i "s|max_execution_time = 30|max_execution_time = 600|" /etc/php83/php.ini
+sed -i "s|max_execution_time = 30|max_execution_time = 600|" /etc/php${PHP_VERSION}/php.ini
 
 # Does the GLPI database config file exists
 if [ ! -f '/etc/glpi/config_db.php' ]
@@ -120,7 +120,7 @@ then
 	echo 'Config file does not exist'
 
 	# Do the user and the database exist?
-	if [ -z "$(mysqlshow --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" | grep "${MYSQL_DATABASE}" 2>/dev/null)" ]
+	if [ -z "$(mariadb-show --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" | grep "${MYSQL_DATABASE}" 2>/dev/null)" ]
 	then
 
 		# Check  if MYSQL_ROOT_PASSWORD exists
@@ -131,20 +131,20 @@ then
 		fi
 
 		# Does the database exist
-		if [ -z "$(mysqlshow --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" | grep "${MYSQL_DATABASE}")" ]
+		if [ -z "$(mariadb-show --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" | grep "${MYSQL_DATABASE}")" ]
 		then
 			# Creation of the Database
 			echo "MySQL Database creation : '${MYSQL_DATABASE}'"
-			mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" << EOF
+			mariadb --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}" << EOF
 CREATE DATABASE ${MYSQL_DATABASE};
 EOF
 		fi
 
 		# Does the user exist
-		if [ -z "$(mysql --host="${MYSQL_HOST}" --user=root --password="${MYSQL_ROOT_PASSWORD}" --database=mysql -e "SELECT User FROM user WHERE User LIKE '${MYSQL_USER}'" | grep "${MYSQL_USER}")" ]
+		if [ -z "$(mariadb --host="${MYSQL_HOST}" --user=root --password="${MYSQL_ROOT_PASSWORD}" --database=mysql -e "SELECT User FROM user WHERE User LIKE '${MYSQL_USER}'" | grep "${MYSQL_USER}")" ]
 		then
 			echo "MySQL user creation : ${MYSQL_USER}"
-			mysql --host=${MYSQL_HOST} --port=${MYSQL_PORT} --user=root --password=${MYSQL_ROOT_PASSWORD} << EOF
+			mariadb --host=${MYSQL_HOST} --port=${MYSQL_PORT} --user=root --password=${MYSQL_ROOT_PASSWORD} << EOF
 CREATE USER '${MYSQL_USER}' IDENTIFIED BY '${MYSQL_PASSWORD}';
 EOF
 		fi
@@ -154,7 +154,7 @@ EOF
 	if [ -n "${MYSQL_ROOT_PASSWORD}" ]
 	then
 		echo "MySQL grant user : ${MYSQL_USER}"
-		mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}"  << EOF
+		mariadb --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user=root --password="${MYSQL_ROOT_PASSWORD}"  << EOF
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}';
 USE mysql;
 GRANT SELECT ON mysql.time_zone_name TO '${MYSQL_USER}';
@@ -164,7 +164,7 @@ EOF
 fi
 
 # Check GLPI actual version
-GLPI_ACTUAL_VERSION="$(mysql --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --database="${MYSQL_DATABASE}" 2>/dev/null << EOF
+GLPI_ACTUAL_VERSION="$(mariadb --host="${MYSQL_HOST}" --port="${MYSQL_PORT}" --user="${MYSQL_USER}" --password="${MYSQL_PASSWORD}" --database="${MYSQL_DATABASE}" 2>/dev/null << EOF
 SELECT value FROM glpi_configs WHERE name LIKE 'version';
 EOF
 )"

@@ -15,13 +15,13 @@ fi
 ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
 # Modify default timezone for PHP
-sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php83/php.ini
+sed -i "s|;date.timezone =|date.timezone=${TZ}|" /etc/php${PHP_VERSION}/php.ini
 
 # Modify default cookie_httponly value for security purpose
-sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php83/php.ini
+sed -i "s|session.cookie_httponly =|session.cookie_httponly = 1|" /etc/php${PHP_VERSION}/php.ini
 
 # Create a symbolik link to php
-ln -s /usr/bin/php83 /usr/bin/php
+ln -s /usr/bin/php${PHP_VERSION} /usr/bin/php
 
 # Waiting for the installation to be done
 echo `date` " - Waiting GLPI to be installed from ppcm/glpi-server"
