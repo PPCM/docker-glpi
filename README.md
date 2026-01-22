@@ -1,8 +1,12 @@
-# GLPI Docker Container
+# GLPI Docker Container - DEPRECATED
+
+⛔️ DEPRECATED
+
+This repository has been discontinued in favor of the official Docker GLPI repository: https://hub.docker.com/r/glpi/glpi
 
 ## Supported tags
 
-- 10, 10.0, 10.0.19, 10.0.19-1, latest
+- 10, 10.0, 10.0.19, 10.0.19-2, latest
 - 10.0.18, 10.0.18-2
 - 10.0.17, 10.0.17-2
 - 10.0.16, 10.0.16-5
